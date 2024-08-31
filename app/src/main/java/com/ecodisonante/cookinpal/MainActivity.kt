@@ -118,6 +118,6 @@ fun LoginButtons() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainPreview() {
     MainDisplay()
 }
