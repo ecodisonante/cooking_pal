@@ -40,25 +40,3 @@ fun CustomTextField(
     )
 }
 
-
-@Composable
-fun CustomCard(
-    modifier: Modifier = Modifier,
-    customHeight: Int = 450,
-    content: @Composable () -> Unit
-) {
-    Card(
-        modifier = modifier
-            .width(260.dp)
-            .height(customHeight.dp)
-            .padding(top = 50.dp)
-            .background(Color.Transparent),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xDDFFFFFF),
-        )
-    ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            content()
-        }
-    }
-}

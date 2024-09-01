@@ -2,7 +2,6 @@ package com.ecodisonante.cookinpal
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,25 +27,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecodisonante.cookinpal.model.DataProvider
 import com.ecodisonante.cookinpal.model.UserPreferences
+import com.ecodisonante.cookinpal.ui.components.CustomAlertInfo
 import com.ecodisonante.cookinpal.ui.components.CustomCard
 import com.ecodisonante.cookinpal.ui.components.CustomTextField
 import com.ecodisonante.cookinpal.ui.components.FatMainButton
 import com.ecodisonante.cookinpal.ui.components.MainButton
 import com.ecodisonante.cookinpal.ui.theme.CookinPalTheme
 
-class LoginActivity : ComponentActivity() {
+class RecoveryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
-            LoginDisplay()
+            RecoveryDisplay()
         }
     }
 }
 
 @Composable
-fun LoginDisplay() {
+fun RecoveryDisplay() {
     CookinPalTheme {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,8 +56,8 @@ fun LoginDisplay() {
                     contentScale = ContentScale.FillBounds
                 )
         ) {
-            CustomCard (customHeight = 500) {
-                LoginForm()
+            CustomCard {
+                RecoveryForm()
             }
         }
     }
@@ -66,27 +65,19 @@ fun LoginDisplay() {
 
 
 @Composable
-fun LoginForm() {
+fun RecoveryForm() {
     val context = LocalContext.current
     val usrPref = UserPreferences(context)
     if (usrPref.getUserList() == null) usrPref.saveUserList(DataProvider.usuarios)
 
     var emailValue by remember { mutableStateOf("") }
-    var passwdValue by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf("") }
 
     CustomTextField(
         value = emailValue,
         label = "Correo",
         onValueChange = { emailValue = it }
-    )
-
-    Spacer(modifier = Modifier.size(15.dp))
-
-    CustomTextField(
-        value = passwdValue,
-        label = "Contraseña",
-        onValueChange = { passwdValue = it },
-        isPassword = true
     )
 
     Row {
@@ -101,34 +92,21 @@ fun LoginForm() {
             Spacer(modifier = Modifier.size(15.dp))
 
             FatMainButton(
-                text = "Ingresar",
+                text = "Recuperar",
                 onClick = {
                     val usuario = usrPref.findUserByEmail(emailValue)
 
-                    if (usuario != null && usuario.passwd == passwdValue) {
-
-                        usrPref.saveCurrentUser(usuario)
-                        Toast.makeText(
-                            context,
-                            "Bienvenido ${usuario.name}",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        context.startActivity(Intent(context, MainActivity::class.java))
+                    if (usuario != null) {
+                        message = "tu clave es ${usuario.passwd}"
                     } else {
-
-                        Toast.makeText(
-                            context,
-                            "Credenciales Incorrectas",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        context.startActivity(Intent(context, LoginActivity::class.java))
+                        message = "usuario no encontrado"
                     }
+
+                    showDialog = true
                 },
             )
 
-            Spacer(modifier = Modifier.size(30.dp))
+            Spacer(modifier = Modifier.size(15.dp))
 
             MainButton(
                 text = "Volver",
@@ -137,21 +115,22 @@ fun LoginForm() {
                 },
             )
 
-            Spacer(modifier = Modifier.size(15.dp))
-
-            MainButton(
-                text = "Recuperar Contraseña",
-                onClick = {
-                    context.startActivity(Intent(context, RecoveryActivity::class.java))
-                },
+            CustomAlertInfo(
+                showDialog = showDialog,
+                onDismiss = { showDialog = false },
+                onConfirm = { showDialog = false },
+                title = "Revisa tu  correo",
+                message = "Hemos enviado un mensaje para que recuperes tu contraseña." +
+                        "\n\n(psst... $message)"
             )
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun LoginPreview() {
-    LoginDisplay()
+fun RecoveryPreview() {
+    RecoveryDisplay()
 }
 
