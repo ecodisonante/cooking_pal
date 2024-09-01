@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecodisonante.cookinpal.model.DataProvider
 import com.ecodisonante.cookinpal.model.UserPreferences
+import com.ecodisonante.cookinpal.ui.components.CustomAlertInfo
 import com.ecodisonante.cookinpal.ui.components.CustomCard
 import com.ecodisonante.cookinpal.ui.components.CustomTextField
 import com.ecodisonante.cookinpal.ui.components.FatMainButton
@@ -57,13 +58,12 @@ fun LoginDisplay() {
                     contentScale = ContentScale.FillBounds
                 )
         ) {
-            CustomCard (customHeight = 500) {
+            CustomCard(customHeight = 500) {
                 LoginForm()
             }
         }
     }
 }
-
 
 @Composable
 fun LoginForm() {
@@ -73,6 +73,11 @@ fun LoginForm() {
 
     var emailValue by remember { mutableStateOf("") }
     var passwdValue by remember { mutableStateOf("") }
+
+    var showDialog by remember { mutableStateOf(false) }
+    var successLogin by remember { mutableStateOf(false) }
+    var dialogTitle by remember { mutableStateOf("") }
+    var dialogMessage by remember { mutableStateOf("") }
 
     CustomTextField(
         value = emailValue,
@@ -106,25 +111,18 @@ fun LoginForm() {
                     val usuario = usrPref.findUserByEmail(emailValue)
 
                     if (usuario != null && usuario.passwd == passwdValue) {
-
                         usrPref.saveCurrentUser(usuario)
-                        Toast.makeText(
-                            context,
-                            "Bienvenido ${usuario.name}",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        context.startActivity(Intent(context, MainActivity::class.java))
+                        successLogin = true
+                        dialogTitle = "Bienvenido ${usuario.name}"
+                        dialogMessage = ""
                     } else {
-
-                        Toast.makeText(
-                            context,
-                            "Credenciales Incorrectas",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        context.startActivity(Intent(context, LoginActivity::class.java))
+                        successLogin = false
+                        dialogTitle = "Credenciales Incorrectas"
+                        dialogMessage = "Entiendo que siendo una app de comida, " +
+                                "tus dedos de salchicha hayan comedito un error. " +
+                                "Puedes intentarlo otra vez."
                     }
+                    showDialog = true
                 },
             )
 
@@ -146,6 +144,17 @@ fun LoginForm() {
                 },
             )
         }
+
+        CustomAlertInfo(
+            showDialog = showDialog,
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                if (successLogin) context.startActivity(Intent(context, MainActivity::class.java))
+                showDialog = false
+            },
+            title = dialogTitle,
+            message = dialogMessage
+        )
     }
 }
 
