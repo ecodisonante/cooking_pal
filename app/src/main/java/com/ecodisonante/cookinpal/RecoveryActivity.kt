@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ecodisonante.cookinpal.model.DataProvider
+import com.ecodisonante.cookinpal.model.UserDataProvider
 import com.ecodisonante.cookinpal.model.UserPreferences
 import com.ecodisonante.cookinpal.ui.components.CustomAlertInfo
 import com.ecodisonante.cookinpal.ui.components.CustomCard
@@ -68,7 +68,7 @@ fun RecoveryDisplay() {
 fun RecoveryForm() {
     val context = LocalContext.current
     val usrPref = UserPreferences(context)
-    if (usrPref.getUserList() == null) usrPref.saveUserList(DataProvider.usuarios)
+    if (usrPref.getUserList() == null) usrPref.saveUserList(UserDataProvider.usuarios)
 
     var emailValue by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }

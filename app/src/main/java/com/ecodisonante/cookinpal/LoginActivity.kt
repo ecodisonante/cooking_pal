@@ -2,7 +2,6 @@ package com.ecodisonante.cookinpal
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,7 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ecodisonante.cookinpal.model.DataProvider
+import com.ecodisonante.cookinpal.model.UserDataProvider
 import com.ecodisonante.cookinpal.model.UserPreferences
 import com.ecodisonante.cookinpal.ui.components.CustomAlertInfo
 import com.ecodisonante.cookinpal.ui.components.CustomCard
@@ -69,7 +68,7 @@ fun LoginDisplay() {
 fun LoginForm() {
     val context = LocalContext.current
     val usrPref = UserPreferences(context)
-    if (usrPref.getUserList() == null) usrPref.saveUserList(DataProvider.usuarios)
+    if (usrPref.getUserList() == null) usrPref.saveUserList(UserDataProvider.usuarios)
 
     var emailValue by remember { mutableStateOf("") }
     var passwdValue by remember { mutableStateOf("") }
@@ -149,7 +148,7 @@ fun LoginForm() {
             showDialog = showDialog,
             onDismiss = { showDialog = false },
             onConfirm = {
-                if (successLogin) context.startActivity(Intent(context, MainActivity::class.java))
+                if (successLogin) context.startActivity(Intent(context, WeeklyMenuActivity::class.java))
                 showDialog = false
             },
             title = dialogTitle,

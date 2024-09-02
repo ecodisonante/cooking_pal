@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ecodisonante.cookinpal.model.DataProvider
+import com.ecodisonante.cookinpal.model.UserDataProvider
 import com.ecodisonante.cookinpal.model.User
 import com.ecodisonante.cookinpal.model.UserPreferences
 import com.ecodisonante.cookinpal.ui.components.CustomCard
@@ -66,7 +66,7 @@ fun RegisterDisplay() {
 fun RegisterForm() {
     val context = LocalContext.current
     val usrPref = UserPreferences(context)
-    if (usrPref.getUserList() == null) usrPref.saveUserList(DataProvider.usuarios)
+    if (usrPref.getUserList() == null) usrPref.saveUserList(UserDataProvider.usuarios)
 
     var nameValue by remember { mutableStateOf("") }
     var emailValue by remember { mutableStateOf("") }

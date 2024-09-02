@@ -10,7 +10,7 @@ data class User(
 )
 
 
-class DataProvider {
+class UserDataProvider {
     companion object {
         /**
          * Lista de usuarios de prueba

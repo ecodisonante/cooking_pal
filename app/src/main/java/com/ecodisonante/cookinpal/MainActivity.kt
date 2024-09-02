@@ -2,7 +2,6 @@ package com.ecodisonante.cookinpal
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -82,17 +81,11 @@ fun LoginButtons() {
     FatMainButton(
         text = if (currentUser != null) "Hola ${currentUser.name}" else "Ingresar",
         onClick = {
-            // TODO: cual es la proxima pagina ?? xd
             if (currentUser == null) {
                 context.startActivity(Intent(context, LoginActivity::class.java))
             } else {
-                Toast.makeText(
-                    context,
-                    "Ya entraste wn!! que mas quieres??",
-                    Toast.LENGTH_LONG
-                ).show()
+                context.startActivity(Intent(context, WeeklyMenuActivity::class.java))
             }
-
         },
     )
 

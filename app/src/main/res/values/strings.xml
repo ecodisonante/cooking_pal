@@ -3,4 +3,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_recovery">RecoveryActivity</string>
+    <string name="title_activity_weekly_menu">WeeklyMenuActivity</string>
 </resources>
